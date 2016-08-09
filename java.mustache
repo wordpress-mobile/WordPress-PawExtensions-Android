@@ -1,0 +1,27 @@
+public void makeRequest() {
+  String url = WPCOMREST.{{#url.endpointList}}{{{value}}}.{{/url.endpointList}}{{{url.javaMethod}}}();
+
+  {{#params.has_params}}
+  Map<String, String> params = new HashMap<>();
+  {{#params.params_list}}
+  params.put("{{{param_key}}}", {{{param_value}}});
+  {{/params.params_list}}
+
+  {{/params.has_params}}
+  final WPComGsonRequest<xWPComRestResponse> request = new WPComGsonRequest<>(Method.{{{request.method}}},
+        url, {{#params.has_params}}params{{/params.has_params}}{{^params.has_params}}null{{/params.has_params}}, xWPComRestResponse.class,
+        new Listener<xWPComRestResponse>() {
+            @Override
+            public void onResponse(xWPComRestResponse response) {
+                // TODO: Process response
+            }
+        },
+        new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle errors
+            }
+        }
+    );
+    add(request);
+}
